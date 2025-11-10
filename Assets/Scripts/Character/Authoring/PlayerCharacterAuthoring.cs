@@ -84,6 +84,55 @@ namespace ZoneSurvival.Character
         [Tooltip("Current carried weight (set this to test encumbrance)")]
         public float currentWeight = 10f;
 
+        [Header("Physics & Collision")]
+        [Tooltip("Character mass in kg")]
+        public float mass = 75f;
+
+        [Tooltip("Air drag/resistance")]
+        public float drag = 0.1f;
+
+        [Tooltip("Maximum step height character can climb")]
+        public float stepHeight = 0.3f;
+
+        [Tooltip("Maximum walkable slope angle in degrees")]
+        public float slopeLimit = 45f;
+
+        [Header("Capsule Heights")]
+        [Tooltip("Capsule height when standing (1.8m)")]
+        public float standingHeight = 1.8f;
+
+        [Tooltip("Capsule height when crouching (1.2m)")]
+        public float crouchingHeight = 1.2f;
+
+        [Tooltip("Capsule height when prone (0.5m)")]
+        public float proneHeight = 0.5f;
+
+        [Tooltip("Capsule radius")]
+        public float capsuleRadius = 0.3f;
+
+        [Tooltip("Height transition speed (higher = faster stance changes)")]
+        public float heightTransitionSpeed = 8f;
+
+        [Header("Ground Detection")]
+        [Tooltip("Ground check radius (slightly smaller than capsule)")]
+        public float groundCheckRadius = 0.25f;
+
+        [Tooltip("Offset for ground check ray")]
+        public Vector3 groundCheckOffset = new Vector3(0f, 0f, 0f);
+
+        [Header("Jump Settings")]
+        [Tooltip("Time to buffer jump input before landing (0.15s)")]
+        public float jumpBufferTime = 0.15f;
+
+        [Tooltip("Coyote time - grace period after leaving ground (0.1s)")]
+        public float coyoteTime = 0.1f;
+
+        [Tooltip("Cooldown between jumps (0.2s)")]
+        public float jumpCooldown = 0.2f;
+
+        [Tooltip("Stamina cost per jump (optional, 0 = no cost)")]
+        public float jumpStaminaCost = 10f;
+
         [Header("Camera Settings")]
         [Tooltip("Mouse horizontal sensitivity")]
         public float mouseSensitivityX = 2f;
@@ -194,6 +243,47 @@ namespace ZoneSurvival.Character
 
                 // Add input data (initialized empty)
                 AddComponent(entity, new PlayerInputData());
+
+                // Add physics data
+                AddComponent(entity, new CharacterPhysicsData
+                {
+                    StandingHeight = authoring.standingHeight,
+                    CrouchingHeight = authoring.crouchingHeight,
+                    ProneHeight = authoring.proneHeight,
+                    CapsuleRadius = authoring.capsuleRadius,
+                    CurrentHeight = authoring.standingHeight,
+                    TargetHeight = authoring.standingHeight,
+                    HeightTransitionSpeed = authoring.heightTransitionSpeed,
+                    Mass = authoring.mass,
+                    Drag = authoring.drag,
+                    StepHeight = authoring.stepHeight,
+                    SlopeLimit = authoring.slopeLimit,
+                    CollisionLayer = 1u, // Default player layer
+                    CollisionMask = ~0u  // Collide with everything
+                });
+
+                // Add ground detection data
+                AddComponent(entity, new GroundDetectionData
+                {
+                    GroundCheckDistance = authoring.groundCheckDistance,
+                    GroundCheckRadius = authoring.groundCheckRadius,
+                    GroundCheckOffset = authoring.groundCheckOffset,
+                    IsGrounded = true,
+                    WasGroundedLastFrame = true,
+                    GroundNormal = new float3(0, 1, 0)
+                });
+
+                // Add jump data
+                AddComponent(entity, new JumpData
+                {
+                    JumpForce = authoring.jumpForce,
+                    JumpCooldown = authoring.jumpCooldown,
+                    JumpBufferTime = authoring.jumpBufferTime,
+                    CoyoteTime = authoring.coyoteTime,
+                    JumpStaminaCost = authoring.jumpStaminaCost,
+                    CanJump = true,
+                    JumpsRemaining = 1
+                });
             }
         }
     }
