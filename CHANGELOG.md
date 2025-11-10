@@ -353,6 +353,27 @@ Complete implementation of interaction, inventory, and item systems. Players can
 - ✅ Ammo tracking (magazine + reserve)
 - ⏳ Full combat integration (future)
 
+**IMPORTANT NOTE - Weapon Durability Design:**
+Current implementation has a single condition field, but the actual system requires **two-stage durability**:
+1. **Overall Weapon Durability** - General weapon condition
+2. **Individual Part Durability** - Each component (barrel, firing pin, receiver, bolt, etc.) has separate condition
+   - Tarkov-style modular gun system where parts can be swapped/replaced
+   - Each part's condition independently affects weapon performance
+3. **Jamming Mechanics** - Both overall durability AND part-specific durability affect jam chance
+   - Worn barrel → accuracy/velocity degradation
+   - Damaged firing pin → increased misfire chance
+   - Degraded receiver → cycling issues
+   - Multiple failure states based on which parts are worn
+
+**Future Implementation Required:**
+- Expand `WeaponItemData` or create separate `WeaponPartData` component
+- Track per-part condition (barrel: 0.85, firing pin: 0.92, etc.)
+- Jamming system that reads both overall and part-specific condition
+- Gun crafting/modding system for part replacement
+- Part compatibility tables (which parts fit which weapons)
+
+This is critical for the Tarkov-style gun customization system.
+
 #### Custom Feature: In-World Item Name Display
 
 Per user request: Items display their names in-world when player is within range.
