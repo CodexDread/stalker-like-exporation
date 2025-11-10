@@ -1,7 +1,7 @@
 # Zone Survival - Project Status
 
 **Unity DOTS ECS Stalker-like Game**
-**Current Version: 0.5.0**
+**Current Version: v0.1.5**
 
 ---
 
@@ -10,11 +10,11 @@
 | System | Status | Version | GDD Compliant |
 |--------|--------|---------|---------------|
 | Character Controller | ✅ Complete | v0.1.0 | ✅ Yes |
-| Physics Integration | ✅ Complete | v0.2.0 | ✅ Yes |
-| Inventory & Interaction | ✅ Complete | v0.3.0 | ✅ Yes |
-| Input System | ✅ Complete | v0.3.1 | ✅ Yes |
-| Weapons System (Two-Stage Durability) | ✅ Complete | v0.4.0 | ✅ Yes |
-| Combat & Visual Effects | ✅ Complete | v0.5.0 | ✅ Yes |
+| Physics Integration | ✅ Complete | v0.1.1 | ✅ Yes |
+| Inventory & Interaction | ✅ Complete | v0.1.2 | ✅ Yes |
+| Input System | ✅ Complete | v0.1.3 | ✅ Yes |
+| Weapons System (Two-Stage Durability) | ✅ Complete | v0.1.4 | ✅ Yes |
+| Combat & Visual Effects | ✅ Complete | v0.1.5 | ✅ Yes |
 | A-Life 2.0 System | ❌ Not Started | - | - |
 | Anomaly System | ❌ Not Started | - | - |
 | NPC AI | ❌ Not Started | - | - |
@@ -46,7 +46,7 @@
 
 ---
 
-### v0.2.0 - Physics Integration (GDD: Advanced Movement)
+### v0.1.1 - Physics Integration (GDD: Advanced Movement)
 **Status: ✅ Fully Functional**
 
 **Implemented:**
@@ -61,7 +61,7 @@
 
 ---
 
-### v0.3.0 - Inventory & Interaction (GDD: Inventory System)
+### v0.1.2 - Inventory & Interaction (GDD: Inventory System)
 **Status: ✅ Fully Functional**
 
 **Implemented:**
@@ -80,7 +80,7 @@
 
 ---
 
-### v0.3.1 - Unified Input System
+### v0.1.3 - Unified Input System
 **Status: ✅ Fully Functional**
 
 **Implemented:**
@@ -95,7 +95,7 @@
 
 ---
 
-### v0.4.0 - Weapons System with Two-Stage Durability (GDD: Weapon System)
+### v0.1.4 - Weapons System with Two-Stage Durability (GDD: Weapon System)
 **Status: ✅ Fully Functional**
 
 **Implemented:**
@@ -116,7 +116,7 @@
 
 ---
 
-### v0.5.0 - Combat & Visual Effects (GDD: Combat System)
+### v0.1.5 - Combat & Visual Effects (GDD: Combat System)
 **Status: ✅ Fully Functional**
 
 **Implemented:**
@@ -482,30 +482,30 @@
 
 ```
 Assets/Scripts/
-├── Character/          # v0.1.0 + v0.2.0 (✅ Complete)
+├── Character/          # v0.1.0 + v0.1.1 (✅ Complete)
 │   ├── Components/     # Movement, stamina, physics data
 │   ├── Systems/        # Movement, jump, camera, dodge
 │   └── Authoring/      # PlayerCharacterAuthoring
-├── Items/              # v0.3.0 (✅ Complete)
+├── Items/              # v0.1.2 (✅ Complete)
 │   ├── Components/     # ItemData, ConsumableData, WeaponItemData
 │   └── Systems/        # ItemPickupSystem, WorldItemUISystem
-├── Inventory/          # v0.3.0 (✅ Complete)
+├── Inventory/          # v0.1.2 (✅ Complete)
 │   ├── Components/     # InventoryData, QuickSlotsData
 │   ├── Systems/        # InventoryManagementSystem
 │   └── Authoring/      # InventoryAuthoring
-├── Interaction/        # v0.3.0 (✅ Complete)
+├── Interaction/        # v0.1.2 (✅ Complete)
 │   ├── Components/     # InteractableTag, InteractorData
 │   ├── Systems/        # InteractionDetection, InteractionExecution
 │   └── Authoring/      # InteractorAuthoring
-├── Weapons/            # v0.4.0 + v0.5.0 (✅ Complete)
+├── Weapons/            # v0.1.4 + v0.1.5 (✅ Complete)
 │   ├── Components/     # WeaponPartData, WeaponStateData, VisualEffects
 │   ├── Systems/        # Firing, Reload, Equip, Stats, Attachment, Cleaning, Visual
 │   ├── Authoring/      # WeaponAuthoring, WeaponPartAuthoring
 │   └── Database/       # WeaponDefinition, WeaponPartDefinition
-├── Combat/             # v0.5.0 (✅ Complete)
+├── Combat/             # v0.1.5 (✅ Complete)
 │   ├── Components/     # HealthData, DamageEvent, HitboxData
 │   └── Systems/        # ProjectileSystem, DamageApplicationSystem
-└── UI/                 # v0.5.0 (⏳ Partial)
+└── UI/                 # v0.1.5 (⏳ Partial)
     └── WeaponModdingUI # Weapon workbench (✅ Complete)
 ```
 
