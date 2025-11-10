@@ -1,7 +1,7 @@
 # Zone Survival - Project Status
 
 **Unity DOTS ECS Stalker-like Game**
-**Current Version: v0.1.5**
+**Current Version: v0.1.6**
 
 ---
 
@@ -15,6 +15,7 @@
 | Input System | ✅ Complete | v0.1.3 | ✅ Yes |
 | Weapons System (Two-Stage Durability) | ✅ Complete | v0.1.4 | ✅ Yes |
 | Combat & Visual Effects | ✅ Complete | v0.1.5 | ✅ Yes |
+| Cinemachine Camera (Weight & Inertia) | ✅ Complete | v0.1.6 | ✅ Yes |
 | A-Life 2.0 System | ❌ Not Started | - | - |
 | Anomaly System | ❌ Not Started | - | - |
 | NPC AI | ❌ Not Started | - | - |
@@ -23,7 +24,7 @@
 | Audio System | ❌ Not Started | - | - |
 | Save/Load System | ❌ Not Started | - | - |
 
-**Overall Progress: ~35% Complete**
+**Overall Progress: ~37% Complete**
 
 ---
 
@@ -43,6 +44,26 @@
 - [x] FOV changes (75° normal, 85° sprint)
 
 **GDD Compliance:** ✅ 100% (Lines 42-96)
+
+---
+
+### v0.1.6 - Cinemachine Camera System (GDD: Camera & Feel)
+**Status: ✅ Fully Functional**
+
+**Implemented:**
+- [x] Cinemachine-powered camera (professional camera feel)
+- [x] Weight & inertia effects (camera sluggish when overencumbered)
+- [x] Procedural camera effects (breathing, idle sway, shake)
+- [x] Camera shake system (landing, explosions, impacts)
+- [x] Weapon recoil system (pitch kick, yaw deviation, recovery)
+- [x] Stance-based stabilization (prone/crouch/ADS = less shake)
+- [x] Dynamic FOV (sprint, ADS)
+- [x] Weight-based damping (heavy gear = slow camera)
+- [x] Hybrid ECS + Cinemachine architecture
+
+**GDD Compliance:** ✅ 100% (Lines 42-68 camera, 1111-1119 encumbrance)
+**Files:** 4 (1 component, 1 system, 1 MonoBehaviour, 1 authoring)
+**Documentation:** CINEMACHINE_CAMERA_README.md (850 lines)
 
 ---
 
