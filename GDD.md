@@ -14,6 +14,7 @@
 - Emergent storytelling through faction warfare
 - Minimal HUD with physical/PDA-based information systems
 - Open-world exploration without extraction requirements
+- Game Engine: Latest version of Unity + Dots ECS
 
 ---
 
