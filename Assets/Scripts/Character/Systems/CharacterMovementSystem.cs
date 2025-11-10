@@ -16,17 +16,21 @@ namespace ZoneSurvival.Character
     [UpdateAfter(typeof(StaminaSystem))]
     [UpdateAfter(typeof(EncumbranceSystem))]
     [UpdateAfter(typeof(DodgeSystem))]
+    [UpdateAfter(typeof(JumpSystem))]
     public partial class CharacterMovementSystem : SystemBase
     {
         protected override void OnUpdate()
         {
             float deltaTime = SystemAPI.Time.DeltaTime;
 
-            foreach (var (movement, state, input, stamina, encumbrance, dodge, camera, transform) in
+            foreach (var (movement, state, input, stamina, encumbrance, dodge, camera, groundData, transform) in
                      SystemAPI.Query<RefRW<CharacterMovementData>, RefRW<CharacterStateData>, RefRO<PlayerInputData>,
                          RefRO<StaminaData>, RefRO<EncumbranceData>, RefRO<DodgeData>, RefRO<FirstPersonCameraData>,
-                         RefRW<LocalTransform>>())
+                         RefRO<GroundDetectionData>, RefRW<LocalTransform>>())
             {
+                // Update grounded state from ground detection
+                movement.ValueRW.IsGrounded = groundData.ValueRO.IsGrounded;
+
                 // Update movement state based on input
                 UpdateMovementState(ref state.ValueRW, in input.ValueRO, in stamina.ValueRO);
 
@@ -44,17 +48,21 @@ namespace ZoneSurvival.Character
                 else
                 {
                     ApplyMovement(ref movement.ValueRW, ref transform.ValueRW, in input.ValueRO,
-                        in camera.ValueRO, targetSpeed, deltaTime);
+                        in camera.ValueRO, in groundData.ValueRO, targetSpeed, deltaTime);
                 }
 
                 // Apply gravity
-                if (!movement.ValueRO.IsGrounded)
+                if (!groundData.ValueRO.IsGrounded)
                 {
                     movement.ValueRW.Velocity.y -= movement.ValueRO.Gravity * deltaTime;
                 }
                 else
                 {
-                    movement.ValueRW.Velocity.y = -2f; // Small downward force to keep grounded
+                    // Snap to ground if close
+                    if (groundData.ValueRO.GroundDistance < 0.05f && movement.ValueRO.Velocity.y <= 0f)
+                    {
+                        movement.ValueRW.Velocity.y = -2f; // Small downward force to maintain ground contact
+                    }
                 }
 
                 // Apply velocity to position
@@ -129,7 +137,8 @@ namespace ZoneSurvival.Character
         /// Applies normal WASD movement
         /// </summary>
         private void ApplyMovement(ref CharacterMovementData movement, ref LocalTransform transform,
-            in PlayerInputData input, in FirstPersonCameraData camera, float targetSpeed, float deltaTime)
+            in PlayerInputData input, in FirstPersonCameraData camera, in GroundDetectionData groundData,
+            float targetSpeed, float deltaTime)
         {
             if (math.lengthsq(input.MoveInput) < 0.01f)
             {
@@ -148,6 +157,14 @@ namespace ZoneSurvival.Character
             float3 moveDirection = (forward * input.MoveInput.y + right * input.MoveInput.x);
             moveDirection = math.normalizesafe(moveDirection);
 
+            // If on a slope, adjust movement to follow ground normal
+            if (groundData.IsGrounded && groundData.GroundAngle > 1f)
+            {
+                // Project movement onto ground plane
+                moveDirection = ProjectOntoPlane(moveDirection, groundData.GroundNormal);
+                moveDirection = math.normalizesafe(moveDirection);
+            }
+
             // Calculate target velocity
             float3 targetVelocity = moveDirection * targetSpeed;
 
@@ -156,6 +173,15 @@ namespace ZoneSurvival.Character
 
             movement.Velocity.x = math.lerp(movement.Velocity.x, targetVelocity.x, accel * deltaTime);
             movement.Velocity.z = math.lerp(movement.Velocity.z, targetVelocity.z, accel * deltaTime);
+        }
+
+        /// <summary>
+        /// Projects a vector onto a plane defined by a normal
+        /// </summary>
+        private float3 ProjectOntoPlane(float3 vector, float3 planeNormal)
+        {
+            float distance = math.dot(vector, planeNormal);
+            return vector - planeNormal * distance;
         }
 
         /// <summary>
