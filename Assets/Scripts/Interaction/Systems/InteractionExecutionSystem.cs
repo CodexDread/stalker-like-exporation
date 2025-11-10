@@ -1,5 +1,6 @@
 using Unity.Entities;
 using Unity.Mathematics;
+using ZoneSurvival.Character;
 
 namespace ZoneSurvival.Interaction
 {
@@ -7,6 +8,8 @@ namespace ZoneSurvival.Interaction
     /// Executes interactions when player presses interact button
     /// Handles timed interactions (hold to interact)
     /// Triggers interaction events for other systems to process
+    ///
+    /// NOTE: Uses unified PlayerInputData for input (not InteractorData)
     /// </summary>
     [UpdateInGroup(typeof(SimulationSystemGroup))]
     [UpdateAfter(typeof(InteractionDetectionSystem))]
@@ -16,7 +19,8 @@ namespace ZoneSurvival.Interaction
         {
             float deltaTime = SystemAPI.Time.DeltaTime;
 
-            foreach (var interactor in SystemAPI.Query<RefRW<InteractorData>>())
+            // Query both InteractorData and PlayerInputData (unified input system)
+            foreach (var (interactor, input) in SystemAPI.Query<RefRW<InteractorData>, RefRO<PlayerInputData>>())
             {
                 // Update cooldown
                 if (interactor.ValueRW.CooldownTimer > 0f)
@@ -35,8 +39,8 @@ namespace ZoneSurvival.Interaction
 
                         if (interactable.InteractionTime > 0f)
                         {
-                            // Timed interaction
-                            if (interactor.ValueRO.InteractHeld)
+                            // Timed interaction - check PlayerInputData for input
+                            if (input.ValueRO.InteractHeld)
                             {
                                 interactor.ValueRW.InteractionProgress += deltaTime / interactable.InteractionTime;
 
@@ -63,8 +67,8 @@ namespace ZoneSurvival.Interaction
                         CancelInteraction(ref state, ref interactor.ValueRW);
                     }
                 }
-                // Check for new interaction
-                else if (interactor.ValueRO.InteractPressed &&
+                // Check for new interaction - check PlayerInputData for input
+                else if (input.ValueRO.InteractPressed &&
                          interactor.ValueRO.CurrentTarget != Entity.Null &&
                          interactor.ValueRO.CooldownTimer <= 0f)
                 {

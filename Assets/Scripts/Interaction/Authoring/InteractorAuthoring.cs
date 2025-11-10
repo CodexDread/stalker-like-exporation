@@ -25,6 +25,7 @@ namespace ZoneSurvival.Interaction
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
 
+                // NOTE: Input now comes from PlayerInputData (unified input system)
                 AddComponent(entity, new InteractorData
                 {
                     CurrentTarget = Entity.Null,
@@ -32,8 +33,6 @@ namespace ZoneSurvival.Interaction
                     InteractionProgress = 0f,
                     InteractionRange = authoring.interactionRange,
                     RaycastDistance = authoring.raycastDistance,
-                    InteractPressed = false,
-                    InteractHeld = false,
                     InteractionCooldown = authoring.interactionCooldown,
                     CooldownTimer = 0f
                 });
