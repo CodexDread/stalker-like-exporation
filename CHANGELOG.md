@@ -4,7 +4,7 @@
 
 ---
 
-## [0.5.0] - 2025-11-10
+## [0.1.5] - 2025-11-10
 
 ### Added - Combat Systems & Visual Effects
 
@@ -217,10 +217,10 @@ WeaponRoot/
 ```
 
 **Integration with Existing Systems:**
-- Uses WeaponStateData.Calculated* for damage (v0.4.0)
-- Reads PlayerInputData for firing (v0.3.1)
+- Uses WeaponStateData.Calculated* for damage (v0.1.4)
+- Reads PlayerInputData for firing (v0.1.3)
 - Integrates with EncumbranceData for weight (v0.1.0)
-- Uses ItemData.Condition for overall durability (v0.3.0)
+- Uses ItemData.Condition for overall durability (v0.1.2)
 
 #### Documentation
 
@@ -357,7 +357,7 @@ All systems verified:
 
 ---
 
-## [0.4.0] - 2025-11-10
+## [0.1.4] - 2025-11-10
 
 ### Added - Weapons System with Two-Stage Durability
 
@@ -552,9 +552,9 @@ Complete implementation of Tarkov-style modular weapons system with two-stage du
 ```
 
 **Integration with Existing Systems:**
-- Uses `PlayerInputData` for input (v0.3.1 unified system)
-- Weapons stored in `InventoryData` (v0.3.0)
-- Quick slots via `QuickSlotsData.WeaponSlots` (v0.3.0)
+- Uses `PlayerInputData` for input (v0.1.3 unified system)
+- Weapons stored in `InventoryData` (v0.1.2)
+- Quick slots via `QuickSlotsData.WeaponSlots` (v0.1.2)
 - Weapon weight contributes to `EncumbranceData` (v0.1.0)
 - Can affect `FirstPersonCameraData` for recoil (v0.1.0)
 
@@ -689,7 +689,7 @@ When implementing gun crafting/modding:
 
 ---
 
-## [0.3.1] - 2025-11-10
+## [0.1.3] - 2025-11-10
 
 ### Changed - Input System Consolidation
 
@@ -866,7 +866,7 @@ This consolidation prevents those issues by establishing the pattern early.
 
 ---
 
-## [0.3.0] - 2025-11-10
+## [0.1.2] - 2025-11-10
 
 ### Added - Inventory & Interaction Systems
 
@@ -1000,7 +1000,7 @@ Complete implementation of interaction, inventory, and item systems. Players can
 **Character Controller Integration:**
 - Inventory weight updates `EncumbranceData.CurrentWeight`
 - Encumbrance affects movement speed (existing system)
-- Seamless integration with v0.2.0 physics systems
+- Seamless integration with v0.1.1 physics systems
 
 #### Documentation
 
@@ -1050,14 +1050,8 @@ Current implementation has a single condition field, but the actual system requi
    - Degraded receiver → cycling issues
    - Multiple failure states based on which parts are worn
 
-**Future Implementation Required:**
-- Expand `WeaponItemData` or create separate `WeaponPartData` component
-- Track per-part condition (barrel: 0.85, firing pin: 0.92, etc.)
-- Jamming system that reads both overall and part-specific condition
-- Gun crafting/modding system for part replacement
-- Part compatibility tables (which parts fit which weapons)
-
-This is critical for the Tarkov-style gun customization system.
+**Implementation Status:**
+✅ **COMPLETED in v0.1.4** - Full two-stage durability system implemented with WeaponPartData component, per-part tracking, and integrated jamming mechanics.
 
 #### Custom Feature: In-World Item Name Display
 
@@ -1135,7 +1129,7 @@ All systems tested and verified:
 
 ---
 
-## [0.2.0] - 2025-11-10
+## [0.1.1] - 2025-11-10
 
 ### Added - Physics Integration & Advanced Movement
 
