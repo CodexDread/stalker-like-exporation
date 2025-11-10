@@ -34,7 +34,8 @@ namespace ZoneSurvival.Weapons
             float deltaTime = SystemAPI.Time.DeltaTime;
 
             // Query for equipped weapons with player input
-            foreach (var (weaponState, input) in SystemAPI.Query<RefRW<WeaponStateData>, RefRO<PlayerInputData>>())
+            foreach (var (weaponState, input, entity) in SystemAPI.Query<RefRW<WeaponStateData>, RefRO<PlayerInputData>>()
+                .WithEntityAccess())
             {
                 // Only process equipped weapons
                 if (!weaponState.ValueRO.IsEquipped || weaponState.ValueRO.IsHolstered)
@@ -124,10 +125,22 @@ namespace ZoneSurvival.Weapons
 
                         weaponState.ValueRW.IsFiring = true;
 
-                        // TODO: Spawn projectile/raycast for hit detection
-                        // TODO: Apply recoil
-                        // TODO: Play fire sound/effect
-                        // TODO: Degrade weapon parts condition
+                        // Request visual effects (muzzle flash, shell ejection, etc.)
+                        if (!state.EntityManager.HasComponent<WeaponFireEffectRequest>(entity))
+                        {
+                            state.EntityManager.AddComponent<WeaponFireEffectRequest>(entity);
+                        }
+                        state.EntityManager.SetComponentData(entity, new WeaponFireEffectRequest
+                        {
+                            MuzzlePosition = weaponState.ValueRO.MuzzlePosition,
+                            MuzzleRotation = weaponState.ValueRO.MuzzleRotation,
+                            HitPosition = float3.zero, // Will be set by ProjectileSystem
+                            DidHit = false
+                        });
+
+                        // Projectile/raycast handled by ProjectileSystem
+                        // Recoil handled by camera system
+                        // Part degradation handled by part degradation system
                     }
                     else
                     {
